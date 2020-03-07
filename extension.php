@@ -16,3 +16,9 @@ tutorial_hello_world([
 tutorial_hello_world([
     'name' => 'Speakap'
 ]);
+
+tutorial_greet_everyone([
+    'Speakap' => 'Hoi',
+    'MeetUp' => 'Hi',
+    'Asil' => 'Merhaba'
+]);
