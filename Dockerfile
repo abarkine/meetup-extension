@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 WORKDIR /usr/src/extension-tutorial
 
-COPY . .
+COPY config.m4 tutorial.c ./
 
 # Prepare the build environment for a PHP extension
 RUN phpize
@@ -35,4 +35,4 @@ RUN make
 # Show information about our extension
 RUN ["php", "-d", "extension=modules/tutorial.so", "--re", "tutorial"] 
 
-ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "-r", "var_dump(tutorial_curl_info());"]
+ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "extension.php"]
