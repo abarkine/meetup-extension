@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 WORKDIR /usr/src/extension-tutorial
 
-COPY config.m4 tutorial.c ./
+COPY config.m4 tutorial.c tutorial.h ./
 
 # Prepare the build environment for a PHP extension
 RUN phpize

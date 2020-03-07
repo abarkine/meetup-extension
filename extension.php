@@ -30,3 +30,5 @@ var_dump(CurlEasy::escape('http://developer.speakap.io/#fragment?query1=value1&q
 $curlEasy = new CurlEasy('https://www.speakap.com');
 $curlEasy = $curlEasy->setOpt(CurlEasy::OPT_URL, 'http://developer.speakap.io');
 $curlEasy->perform();
+
+var_dump(tutorial_get_default());

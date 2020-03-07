@@ -1,16 +1,13 @@
 /* tutorial.c */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
-
-#include "php.h"
+#include "tutorial.h"
 #include "zend_exceptions.h"
 
 #include <curl/curl.h>
 
 static zend_class_entry *curl_easy_ce = NULL;
 static zend_object_handlers curl_easy_handlers;
+ZEND_DECLARE_MODULE_GLOBALS(tutorial);
 
 typedef struct _curl_easy_object {
     CURL *handle;
@@ -242,6 +239,11 @@ static PHP_FUNCTION(tutorial_greet_everyone) {
     ZEND_HASH_FOREACH_END();
 }
 
+PHP_FUNCTION(tutorial_get_default)
+{
+    RETVAL_STRING(TUTORIALG(default_url));
+}
+
 static zend_function_entry tutorial_functions[] = {
     PHP_FE(tutorial_curl_version, NULL)
     PHP_FE(tutorial_curl_ver, NULL)
@@ -249,6 +251,7 @@ static zend_function_entry tutorial_functions[] = {
     PHP_FE(tutorial_curl_info, NULL)
     PHP_FE(tutorial_hello_world, NULL)
     PHP_FE(tutorial_greet_everyone, NULL)
+    PHP_FE(tutorial_get_default, NULL)
     PHP_FE_END
 };
 
@@ -279,6 +282,11 @@ static PHP_MSHUTDOWN_FUNCTION(tutorial) {
     return SUCCESS;
 }
 
+static PHP_GINIT_FUNCTION(tutorial) {
+    ZEND_TSRMLS_CACHE_UPDATE();
+    tutorial_globals->default_url = "http://asil.dev";
+}
+
 zend_module_entry tutorial_module_entry = {
     STANDARD_MODULE_HEADER,
     "tutorial",
@@ -289,7 +297,11 @@ zend_module_entry tutorial_module_entry = {
     NULL, /* RSHUTDOWN */
     NULL, /* MINFO */
     NO_VERSION_YET,
-    STANDARD_MODULE_PROPERTIES
+    PHP_MODULE_GLOBALS(tutorial),
+    PHP_GINIT(tutorial),
+    NULL, /* GSHUTDOWN */
+    NULL, /* POSTDEACTIVATE */
+    STANDARD_MODULE_PROPERTIES_EX
 };
 
 #ifdef COMPILE_DL_TUTORIAL
