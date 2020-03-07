@@ -22,3 +22,5 @@ tutorial_greet_everyone([
     'MeetUp' => 'Hi',
     'Asil' => 'Merhaba'
 ]);
+
+$curlEasy = new \Tutorial\CurlEasy('https://www.speakap.com/');
