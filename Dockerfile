@@ -35,4 +35,4 @@ RUN make
 # Show information about our extension
 RUN ["php", "-d", "extension=modules/tutorial.so", "--re", "tutorial"] 
 
-ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "-r", "tutorial_curl_version();"]
+ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "-r", "var_dump(tutorial_curl_ver());"]
