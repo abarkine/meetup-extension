@@ -35,4 +35,4 @@ RUN make
 # Show information about our extension
 RUN ["php", "-d", "extension=modules/tutorial.so", "--re", "tutorial"] 
 
-ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "-r", "var_dump(tutorial_curl_ver());"]
+ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "-r", "var_dump(tutorial_curl_escape('speakap meetup'));"]
