@@ -23,14 +23,15 @@ static curl_easy_object* curl_easy_from_zend_object(zend_object *objval) {
 
 static PHP_METHOD(CurlEasy, __construct) {
     curl_easy_object *objval = curl_easy_from_zend_object(Z_OBJ_P(getThis()));
-    zend_string *url = NULL;
+    char *url = TUTORIALG(default_url);
+    size_t url_len = 0;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|P", &url) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|p", &url, &url_len) == FAILURE) {
         return;
     }
 
-    if (url) {
-        CURLcode urlRet = curl_easy_setopt(objval->handle, CURLOPT_URL, ZSTR_VAL(url));
+    if (url && url[0]) {
+        CURLcode urlRet = curl_easy_setopt(objval->handle, CURLOPT_URL, url);
         if (urlRet != CURLE_OK) {
             zend_throw_exception(zend_ce_exception, "Failed setting URL", (zend_long)urlRet);
         }
@@ -255,6 +256,11 @@ static zend_function_entry tutorial_functions[] = {
     PHP_FE_END
 };
 
+PHP_INI_BEGIN()
+    STD_PHP_INI_ENTRY("tutorial.default_url", "", PHP_INI_ALL,
+                      OnUpdateString, default_url, zend_tutorial_globals, tutorial_globals)
+PHP_INI_END()
+
 static PHP_MINIT_FUNCTION(tutorial) {
     if (CURLE_OK != curl_global_init(CURL_GLOBAL_DEFAULT)) {
         return FAILURE;
@@ -273,10 +279,13 @@ static PHP_MINIT_FUNCTION(tutorial) {
 
     zend_declare_class_constant_long(curl_easy_ce, "OPT_URL", strlen("OPT_URL"), CURLOPT_URL);
 
+    REGISTER_INI_ENTRIES();
+
     return SUCCESS;
 }
 
 static PHP_MSHUTDOWN_FUNCTION(tutorial) {
+    UNREGISTER_INI_ENTRIES();
     curl_global_cleanup();
 
     return SUCCESS;
@@ -284,7 +293,7 @@ static PHP_MSHUTDOWN_FUNCTION(tutorial) {
 
 static PHP_GINIT_FUNCTION(tutorial) {
     ZEND_TSRMLS_CACHE_UPDATE();
-    tutorial_globals->default_url = "http://asil.dev";
+    tutorial_globals->default_url = NULL;
 }
 
 zend_module_entry tutorial_module_entry = {

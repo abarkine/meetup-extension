@@ -32,3 +32,6 @@ $curlEasy = $curlEasy->setOpt(CurlEasy::OPT_URL, 'http://developer.speakap.io');
 $curlEasy->perform();
 
 var_dump(tutorial_get_default());
+
+$defaultCurlEasy = new CurlEasy();
+$defaultCurlEasy->perform();

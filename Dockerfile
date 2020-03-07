@@ -35,4 +35,4 @@ RUN make
 # Show information about our extension
 RUN ["php", "-d", "extension=modules/tutorial.so", "--re", "tutorial"] 
 
-ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "extension.php"]
+ENTRYPOINT ["php", "-d", "extension=modules/tutorial.so", "-d", "tutorial.default_url=http://asil.dev", "extension.php"]
