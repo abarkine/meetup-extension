@@ -1,5 +1,7 @@
 <?php
 
+use \Tutorial\CurlEasy;
+
 tutorial_curl_version();
 
 var_dump(tutorial_curl_ver());
@@ -23,4 +25,8 @@ tutorial_greet_everyone([
     'Asil' => 'Merhaba'
 ]);
 
-$curlEasy = new \Tutorial\CurlEasy('https://www.speakap.com/');
+var_dump(CurlEasy::escape('http://developer.speakap.io/#fragment?query1=value1&query2=value1 value2'));
+
+$curlEasy = new CurlEasy('https://www.speakap.com');
+$curlEasy = $curlEasy->setOpt(CurlEasy::OPT_URL, 'http://developer.speakap.io');
+$curlEasy->perform();
